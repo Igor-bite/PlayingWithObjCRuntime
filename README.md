@@ -49,16 +49,66 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-
-		NothingToSeeHere.harmlessFunction()
-
-		return true
-	}
+        
+        NothingToSeeHere.harmlessFunction()
+        return true
+    }
 
 }
 ```
 
-Now we can implement protocol `SelfAware` in `ViewController` and swizzle needed methods there. In my particular example I have swizzled methods for getting background color and text for label.
+Now we can implement protocol `SelfAware` in `ViewController` and swizzle needed methods there. [In my particular example](PlayingWithObjCRuntime/SwizzlingExtension.swift) I have swizzled methods for getting background color and text for label.
+
+### Swizzling example
+
+```swift
+extension ViewController: SelfAware {
+	static func awake() {
+		swizzleBgColor()
+	}
+
+    private static func swizzleBgColor() {
+		swizzleMethod(withName: "getBgColor", withMethod: "getNewBgColor")
+	}
+
+	private static func swizzleMethod(withName original: String, withMethod swizzled: String) {
+		let originalSelector = Selector(original)
+		let swizzledSelector = Selector(swizzled)
+
+		guard let originalMethod = class_getInstanceMethod(self, originalSelector) else { return }
+		guard let swizzledMethod = class_getInstanceMethod(self, swizzledSelector) else { return }
+
+		let didAddMethod = class_addMethod(
+			self,
+			originalSelector,
+			method_getImplementation(swizzledMethod),
+			method_getTypeEncoding(swizzledMethod)
+		)
+
+		if didAddMethod {
+			class_replaceMethod(
+				self,
+				swizzledSelector,
+				method_getImplementation(originalMethod),
+				method_getTypeEncoding(originalMethod)
+			)
+		} else {
+			method_exchangeImplementations(originalMethod, swizzledMethod)
+		}
+	}
+}
+```
+
+---
+
+**-> Instead of:** 
+```swift
+Selector("methodName")
+``` 
+**can be used:**
+```swift
+#selector(self.methodName)
+```
 
 ### Useful materials to read:
 - https://nshipster.com/method-swizzling/
