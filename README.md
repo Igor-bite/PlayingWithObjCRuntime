@@ -101,17 +101,6 @@ extension ViewController: SelfAware {
 }
 ```
 
----
-
-**-> Instead of:** 
-```swift
-Selector("methodName")
-``` 
-**can be used:**
-```swift
-#selector(self.methodName)
-```
-
 ### Useful materials to read:
 - https://nshipster.com/method-swizzling/
 - https://nshipster.com/swift-objc-runtime/
