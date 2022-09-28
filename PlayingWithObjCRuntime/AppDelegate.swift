@@ -13,7 +13,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        NothingToSeeHere.harmlessFunction()
+
+        NothingToSeeHere.harmlessFunction() // Do NOT name classes and funcs like this!
+
         return true
     }
 }

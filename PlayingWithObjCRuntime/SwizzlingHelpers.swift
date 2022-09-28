@@ -37,6 +37,7 @@ extension SelfAware {
     }
 }
 
+// MARK: Do NOT name classes and funcs like this!
 class NothingToSeeHere {
     static func harmlessFunction() {
         let typeCount = Int(objc_getClassList(nil, 0))
