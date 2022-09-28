@@ -10,11 +10,13 @@ import UIKit
 class ViewController: UIViewController {
     @IBOutlet weak var label: UILabel!
 
+    let textProvider = TextProvider()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = getBgColor()
-        label.text = getText()
+        label.text = getText() + "\n" + textProvider.getText()
     }
 
     @objc
