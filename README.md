@@ -68,14 +68,10 @@ extension ViewController: SelfAware {
     }
     
     private static func swizzleBgColor() {
-        swizzleMethod(withName: "getBgColor",
-                      withMethod: "getNewBgColor")
+        swizzleMethod(#selector(getBgColor), withMethod: #selector(getNewBgColor))
     }
 
-    private static func swizzleMethod(withName original: String, withMethod swizzled: String) {
-        let originalSelector = Selector(original)
-        let swizzledSelector = Selector(swizzled)
-
+    private static func swizzleMethod(_ originalSelector: Selector, withMethod swizzledSelector: Selector) {
         guard let originalMethod = class_getInstanceMethod(self, originalSelector) else { return }
         guard let swizzledMethod = class_getInstanceMethod(self, swizzledSelector) else { return }
 
@@ -94,8 +90,13 @@ extension ViewController: SelfAware {
                 method_getTypeEncoding(originalMethod)
             )
         } else {
-            (originalMethod, swizzledMethod)
+            method_exchangeImplementations(originalMethod, swizzledMethod)
         }
+    }
+
+    @objc
+    func getNewBgColor() -> UIColor {
+        return .green
     }
 }
 ```
