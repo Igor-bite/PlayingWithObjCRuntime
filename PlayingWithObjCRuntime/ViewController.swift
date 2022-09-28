@@ -8,12 +8,22 @@
 import UIKit
 
 class ViewController: UIViewController {
+	@IBOutlet weak var label: UILabel!
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view.
+
+		view.backgroundColor = getBgColor()
+		label.text = getText()
 	}
 
+	@objc
+	dynamic func getBgColor() -> UIColor {
+		return .red
+	}
 
+	@objc
+	dynamic func getText() -> String {
+		return "Text"
+	}
 }
-
