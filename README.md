@@ -45,16 +45,18 @@ We still need a way to run the function we defined, i.e. NothingToSeeHere.harmle
 ```swift
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-	func application(
+    func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        
+
         NothingToSeeHere.harmlessFunction()
+
         return true
     }
 
 }
+
 ```
 
 Now we can implement protocol `SelfAware` in `ViewController` and swizzle needed methods there. [In my particular example](PlayingWithObjCRuntime/SwizzlingExtension.swift) I have swizzled methods for getting background color and text for label.
